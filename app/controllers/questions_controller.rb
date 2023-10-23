@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
 
   # GET /questions
   def index
-    @questions = Question.all
+    @questions = Question.where(survey_id: @survey_id)
 
     render json: @questions
   end
@@ -21,7 +21,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params.merge(survey_id: @survey_id))
 
     if @question.save
-      render json: @question, status: :created, location: @question
+      render json: @question, status: :created
     else
       render json: @question.errors, status: :unprocessable_entity
     end
@@ -53,6 +53,6 @@ class QuestionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def question_params
-      params.require(:question).permit(:name, :type_question, :options_answer)
+      params.require(:question).permit(:name, :type_question, options_answer: [])
     end
 end

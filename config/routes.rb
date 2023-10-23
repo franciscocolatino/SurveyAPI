@@ -2,9 +2,7 @@ Rails.application.routes.draw do
   resources :surveys do
     resources :questions
   end
-  resources :questions, only: [:index] do
-    resources :answers
-  end
+  resources :answers
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
