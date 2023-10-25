@@ -1,6 +1,7 @@
 class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :user
+  belongs_to :survey
 
 
   # validate :check_all_answers

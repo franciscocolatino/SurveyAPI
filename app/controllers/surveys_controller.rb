@@ -6,10 +6,12 @@ class SurveysController < ApplicationController
   # GET /surveys
   def index
     #@surveys = @user.surveys.all
-    @surveys = Survey.where("closed = false")
+    # @surveys = Survey.where("closed = false")
+    @surveys = Survey.all
+    
     render json: @surveys
   end
-  
+
   # GET /surveys/1
   def show
     render json: @survey
