@@ -37,12 +37,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_25_132231) do
   end
 
   create_table "surveys", force: :cascade do |t|
-    t.string "title"
+    t.string "title", null: false
     t.boolean "closed", default: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "deadline"
+    t.datetime "deadline", null: false
     t.index ["user_id"], name: "index_surveys_on_user_id"
   end
 
