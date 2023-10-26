@@ -62,7 +62,7 @@ A authenticação na API foi feita usando JWT(JSON WEB TOKEN)
   * Essa API possui rotas aninhadas.
   A seguir estão as principais rotas da API:
 
-## Surveys
+# Surveys
 
 - **Listar todas as pesquisas abertas**: `GET /surveys`
 - **Criar uma nova pesquisa**: `POST /surveys(.:format)` Apenas adm
@@ -70,20 +70,20 @@ A authenticação na API foi feita usando JWT(JSON WEB TOKEN)
 - **Atualizar uma pesquisa existente**: `PATCH/PUT /surveys/:id` Apenas adm
 - **Excluir uma pesquisa**: `DELETE /surveys/:id(.:format)` Apenas adm
 
-## Questions
+# Questions
 
 - **Listar todas as perguntas de uma pesquisa**: `GET /surveys/:survey_id/questions`
 - **Criar uma nova pergunta para uma pesquisa**: `POST /surveys/:survey_id/questions` Apenas adm
 - **Atualizar uma pergunta específica em uma pesquisa**: `PATCH/PUT /surveys/:survey_id/questions/:id` Apenas adm
 - **Excluir uma pergunta de uma pesquisa**: `DELETE /surveys/:survey_id/questions/:id` Apenas adm
 
-## Answers
+# Answers
 
 - **Listar todas as respostas de uma pesquisa**: `GET /surveys/:survey_id/answers`
 - **Criar uma nova resposta para uma pesquisa**: `POST /surveys/:survey_id/answers(.:format)`
 - **Listar todas as respostas de todas as pesquisas**: `GET /answers(.:format)` Apenas adm
 
-## Users
+# Users
 
 - **Registrar um novo usuário**: `POST /users`
 - **Autenticar um usuário**: `POST /login`
