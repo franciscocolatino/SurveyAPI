@@ -1,7 +1,8 @@
 class AnswersController < ApplicationController
   before_action :authorize
-  before_action :set_answer, only: %i[ show update destroy ]
-  before_action :get_survey_id
+  before_action :adm_only, only: %i[ all_answers ]
+  before_action :set_answer, only: %i[ show destroy ]
+  before_action :get_survey_id, only: %i[ index create ]
 
   # GET /surveys/:survey_id/answers
   def index
@@ -21,12 +22,7 @@ class AnswersController < ApplicationController
     render json: @answers
   end
 
-  # GET /answers/1
-  def show
-    render json: @answer
-  end
-
-  # POST /answers
+  # POST /surveys/:survey_id/answers
   def create
     @answer = []
     values = answer_params[:answer]
@@ -51,22 +47,7 @@ class AnswersController < ApplicationController
     render json: @answer, status: :created unless @answer == []
   end
 
-  # PATCH/PUT /answers/1
-  def update
-    if @answer.update(answer_params.merge(user_id: @user.id, survey_id: @survey_id))
-      render json: @answer
-    else
-      render json: @answer.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /answers/1
-  def destroy
-    @answer.destroy
-  end
-
   private
-    # Use callbacks to share common setup or constraints between actions.
 
     def set_answer
       @answer = Answer.find(params[:id])
@@ -76,7 +57,6 @@ class AnswersController < ApplicationController
       @survey_id = params[:survey_id]
     end
 
-    # Only allow a list of trusted parameters through.
     def answer_params
       params.permit(:survey_id, answer: [:question_id, :answer])
     end

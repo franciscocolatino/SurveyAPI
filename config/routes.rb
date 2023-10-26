@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :surveys do
-    resources :questions
-    resources :answers
+    resources :questions, only: [ :index, :create, :update, :destroy ]
+    resources :answers, only: [ :index, :create ]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

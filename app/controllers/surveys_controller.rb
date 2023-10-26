@@ -1,6 +1,6 @@
 class SurveysController < ApplicationController
   before_action :authorize
-  before_action :adm_only
+  before_action :adm_only, except: :index
   before_action :set_survey, only: %i[ show update destroy ]
 
   # GET /surveys
@@ -11,9 +11,9 @@ class SurveysController < ApplicationController
 
     render json: @surveys
   end
-  # GET /surveys_all ADM only FALTA IMPLEMENTAR ROTA
+  # GET /surveys_all ADM only
   def all_surveys
-    @surveys = Survey.all
+    @surveys = Survey.select('surveys.*, users.username AS created_by').joins(:user).all
     render json: @surveys
   end
   # GET /surveys/1
@@ -47,12 +47,11 @@ class SurveysController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_survey
       @survey = Survey.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def survey_params
       params.require(:survey).permit(:title, :closed, :deadline)
     end

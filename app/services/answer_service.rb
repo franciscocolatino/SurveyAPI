@@ -7,6 +7,7 @@ module AnswerService
     .group('surveys.id, surveys.deadline')
     .first
   end
+
   def self.fetch_index(survey_id)
     Answer.select(
       'surveys.id',
@@ -16,6 +17,7 @@ module AnswerService
     ).joins(:question, :survey)
     .group('surveys.id, answers.answer, questions.name').where(survey_id: survey_id)
   end
+  
   def self.fetch_all_answers
     Answer.select(
       'surveys.id',

@@ -1,22 +1,17 @@
 class QuestionsController < ApplicationController
   before_action :authorize
-  before_action :adm_only
+  before_action :adm_only, except: :index
   before_action :set_question, only: %i[ show update destroy ]
-  before_action :get_survey_id # AJUSTAR ISSO DEPOIS
+  before_action :get_survey_id, except: :destroy
 
-  # GET /questions
+  # GET /surveys/:survey_id/questions
   def index
     @questions = Question.where(survey_id: @survey_id)
 
     render json: @questions
   end
 
-  # GET /questions/1
-  def show
-    render json: @question
-  end
-
-  # POST /questions
+  # POST /surveys/:survey_id/questions
   def create
     @question = Question.new(question_params.merge(survey_id: @survey_id))
 
@@ -27,7 +22,7 @@ class QuestionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /questions/1
+  # PATCH/PUT /surveys/:survey_id/questions/1
   def update
     if @question.update(question_params.merge(survey_id: @survey_id))
       render json: @question
@@ -42,7 +37,7 @@ class QuestionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_question
       @question = Question.find(params[:id])
     end
@@ -51,7 +46,6 @@ class QuestionsController < ApplicationController
       @survey_id = params[:survey_id]
     end
 
-    # Only allow a list of trusted parameters through.
     def question_params
       params.require(:question).permit(:name, :type_question, options_answer: [])
     end
