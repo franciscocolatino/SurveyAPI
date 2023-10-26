@@ -3,27 +3,14 @@ class AnswersController < ApplicationController
   before_action :set_answer, only: %i[ show update destroy ]
   before_action :get_survey_id
 
-  # GET /answers
+  # GET /surveys/:survey_id/answers
   def index
-    @answers = Answer.select(
-      'surveys.id',
-      'questions.name AS pergunta',
-      'answers.answer AS resposta',
-      'COUNT(*) AS numero_de_respostas'
-    ).joins(:question, :survey)
-    .group('surveys.id, answers.answer, questions.name').where(survey_id: @survey_id)
+    @answers = AnswerService.fetch_index(@survey_id)
     render json: @answers
   end
-
+  # GET /answers
   def all_answers
-    response = Answer.select(
-      'survey.id',
-      'questions.name AS pergunta',
-      'answers.answer AS resposta',
-      'COUNT(*) AS numero_de_respostas'
-    ).joins(:question, :survey)
-    .group('surveys.id, answers.answer, questions.name')
-    .order('surveys.id')
+    response = AnswerService.fetch_all_answers
     @answers = {}
     response.each do |answer|
       if @answers[answer.id].nil?
@@ -31,6 +18,7 @@ class AnswersController < ApplicationController
       end
       @answers[answer.id].push({ pergunta: answer.pergunta, resposta: answer.resposta, numero_de_respostas: answer.numero_de_respostas })
     end
+    render json: @answers
   end
 
   # GET /answers/1
@@ -42,20 +30,23 @@ class AnswersController < ApplicationController
   def create
     @answer = []
     values = answer_params[:answer]
-    quantity = Question.where(survey_id: @survey_id).count
-
-    if values.length == quantity
-      values.each do |answer_hash|
-        answer = Answer.new(answer_hash.merge(user_id: @user.id, survey_id: @survey_id))
-        if answer.save
-          @answer.push(answer)
-        else
-          render json: answer.errors, status: :unprocessable_entity
-          return
-        end
+    query_result = AnswerService.fetch_survey_details(@survey_id)
+    if (values.length != query_result[:question_count])
+      render json: { error: "Responda todas as perguntas para enviar o formulário!", questions: query_result[:question_count] }, status: :unprocessable_entity
+      return
+    end
+    if (query_result[:deadline].strftime("%Y-%m-%dT%H:%M:%SZ") < Time.now.strftime("%Y-%m-%dT%H:%M:%SZ") || query_result[:closed] == true)
+      render json: { error: "Essa pesquisa não aceita mais respostas", deadline: query_result[:deadline], closed: query_result[:closed] }, status: :unprocessable_entity
+      return
+    end
+    values.each do |answer_hash|
+      answer = Answer.new(answer_hash.merge(user_id: @user.id, survey_id: @survey_id))
+      if answer.save
+        @answer.push(answer)
+      else
+        render json: answer.errors, status: :unprocessable_entity
+        return
       end
-    else
-      render json: {error: "Responda todas as perguntas para enviar o formulário!", questions: quantity}, status: :unprocessable_entity
     end
     render json: @answer, status: :created unless @answer == []
   end
@@ -76,6 +67,7 @@ class AnswersController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+
     def set_answer
       @answer = Answer.find(params[:id])
     end

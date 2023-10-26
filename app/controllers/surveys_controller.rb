@@ -7,11 +7,15 @@ class SurveysController < ApplicationController
   def index
     #@surveys = @user.surveys.all
     # @surveys = Survey.where("closed = false")
-    @surveys = Survey.all
-    
+    @surveys = Survey.where("closed = false and deadline > ?", Time.now.strftime("%Y-%m-%dT%H:%M:%SZ"))
+
     render json: @surveys
   end
-
+  # GET /surveys_all ADM only FALTA IMPLEMENTAR ROTA
+  def all_surveys
+    @surveys = Survey.all
+    render json: @surveys
+  end
   # GET /surveys/1
   def show
     render json: @survey
@@ -50,6 +54,6 @@ class SurveysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def survey_params
-      params.require(:survey).permit(:title, :closed)
+      params.require(:survey).permit(:title, :closed, :deadline)
     end
 end
