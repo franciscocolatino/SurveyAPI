@@ -7,7 +7,7 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 user1 = User.create(username: "francisco", password: "1234")
-user2 = User.create(username: "chico", password: "1234", role: "admin")
+user2 = User.create(username: "chico", password: "1234", role: "adm")
 
 
 survey = Survey.create(title: "Titulo 1", user_id: 2, deadline: Date.today + 5.days)

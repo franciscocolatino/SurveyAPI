@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
-  before_action :authorize
+
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
@@ -13,13 +13,38 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      # current_user: current_user,
+      current_user: current_user,
+      decoded_token: decode_token
     }
     result = SurveyApiSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
     handle_error_in_development(e)
+  end
+
+  def current_user
+    if decode_token
+      data = decode_token
+      user = User.find_by({id: data[:user_id]}) if data[:user_id].present?
+      @current_user ||= user if (data[:user_id].present? && data[:role].present?)
+    end
+  end
+
+  def decode_token
+    auth_header = request.headers['Authorization']
+    token = auth_header.split(' ').last if auth_header
+    if token
+      begin
+        @decoded_token ||= JsonWebToken.decode(token)
+      rescue ActiveRecord::RecordNotFound => e
+        raise GraphQL::ExecutionError.new(e.message)
+      rescue JWT::DecodeError => e
+        raise GraphQL::ExecutionError.new(e.message)
+      rescue StandardError => e
+        raise GraphQL::ExecutionError.new(e.message)
+      end
+    end
   end
 
   private
