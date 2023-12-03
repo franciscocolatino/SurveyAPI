@@ -7,7 +7,7 @@ module Types
     field :survey_id, Integer, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :type_question, Integer
+    field :type_question, String
     field :options_answer, [String], null: false
     field :answer, [Types::AnswerType]
   end

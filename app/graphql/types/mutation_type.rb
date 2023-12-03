@@ -9,8 +9,14 @@ module Types
     #   "Hello World"
     # end
     field :create_user, mutation: Mutations::Users::CreateUser
-    
+
     field :login_user, mutation: Mutations::Users::LoginUser
+
+    field :create_survey, mutation: Mutations::Surveys::CreateSurvey
+    field :update_survey, mutation: Mutations::Surveys::UpdateSurvey
+
+    field :create_question, mutation: Mutations::Questions::CreateQuestion
+
 
   end
 end
