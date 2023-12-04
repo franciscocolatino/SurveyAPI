@@ -4,13 +4,13 @@ module Mutations
 
       description 'Criando uma questão'
 
-      argument :question, Types::Inputs::QuestionInputType, required: true
+      input_object_class Types::Inputs::Questions::CreateInputType
 
       field :question, Types::QuestionType, null: false
 
-      def resolve(question:)
+      def resolve(**arguments)
         authenticate_user(role: 'adm')
-        question = Question.new(name: question.name, options_answer: question.options_answer, survey_id: question.survey_id, type_question: question.type_question)
+        question = Question.new(arguments.to_hash)
         if question.save
           {question: question}
         else

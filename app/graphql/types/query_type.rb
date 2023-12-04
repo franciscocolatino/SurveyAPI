@@ -7,6 +7,8 @@ module Types
     field :all_surveys, resolver: Queries::Surveys::AllSurveys
     field :open_surveys, resolver: Queries::Surveys::OpenSurveys
     field :show_survey, resolver: Queries::Surveys::ShowSurvey
+    field :quantity_answers, resolver: Queries::Answers::QuantityAnswers
+    field :all_quantity_answer, resolver: Queries::Answers::AllQuantityAnswers
 
     field :node, Types::NodeType, null: true, description: "Fetches an object given its ID." do
       argument :id, ID, required: true, description: "ID of the object."

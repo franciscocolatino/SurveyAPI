@@ -1,6 +1,6 @@
-module Types
-  module Inputs
-    class QuestionInputType < GraphQL::Schema::InputObject
+module Types::Inputs
+  module Questions
+    class CreateInputType < GraphQL::Schema::InputObject
 
       argument :name, String, required: true
       argument :options_answer, [String], required: true

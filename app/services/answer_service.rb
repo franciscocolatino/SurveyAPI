@@ -9,15 +9,16 @@ module AnswerService
   end
 
   def self.fetch_index(survey_id)
-    Answer.select(
+    teste = Answer.select(
       'surveys.id',
       'questions.name AS pergunta',
       'answers.answer AS resposta',
       'COUNT(*) AS numero_de_respostas'
     ).joins(:question, :survey)
     .group('surveys.id, answers.answer, questions.name').where(survey_id: survey_id)
+    return teste
   end
-  
+
   def self.fetch_all_answers
     Answer.select(
       'surveys.id',

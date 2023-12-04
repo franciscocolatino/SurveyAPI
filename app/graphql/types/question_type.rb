@@ -9,6 +9,12 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :type_question, String
     field :options_answer, [String], null: false
-    field :answer, [Types::AnswerType]
+    
+    # def answer
+    #   if context[:current_user].role == 'user'
+    #     raise GraphQL::ExecutionError.new(I18n.t('errors.users.noPermission'))
+    #   else
+    #     object.answer
+    #   end
   end
 end
