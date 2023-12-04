@@ -16,6 +16,9 @@ module Types
     field :update_survey, mutation: Mutations::Surveys::UpdateSurvey
 
     field :create_question, mutation: Mutations::Questions::CreateQuestion
+    field :update_question, mutation: Mutations::Questions::UpdateQuestion
+
+    field :create_answers, mutation: Mutations::Answers::CreateAnswers
 
 
   end
