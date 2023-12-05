@@ -1,7 +1,6 @@
 module Mutations
   module Surveys
     class UpdateSurvey < BaseMutation
-      require 'json_web_token'
 
       description 'Atualize uma pesquisa específica'
 
