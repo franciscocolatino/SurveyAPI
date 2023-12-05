@@ -6,7 +6,7 @@ module Queries
 
       def resolve
         authenticate_user(role: 'adm')
-        Survey.preload(:question, :answer)
+        Survey.preload(:question)
       end
     end
   end

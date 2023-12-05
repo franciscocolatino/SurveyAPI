@@ -6,21 +6,9 @@ module Queries
 
       type [Types::AnswerCountType], null: false
 
-      def resolve(survey_id: nil)
-        begin
-          authenticate_user(role: 'adm')
-          Answer.select(
-            'surveys.id AS survey_id',
-            'questions.name AS question_name',
-            'answers.answer AS answer',
-            'COUNT(*) AS quantity'
-          ).joins(:question, :survey)
-          .group('surveys.id, answers.answer, questions.name').where(survey_id: survey_id)
-        rescue ActiveRecord::RecordNotFound => e
-          raise GraphQL::ExecutionError.new(e.message)
-        rescue StandardError => e
-          raise GraphQL::ExecutionError.new(e.message)
-        end
+      def resolve(survey_id:)
+        authenticate_user(role: 'adm')
+        AnswerQuantifier.new(survey_id).call
       end
     end
   end
