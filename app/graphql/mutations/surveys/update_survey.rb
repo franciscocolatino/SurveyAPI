@@ -5,27 +5,13 @@ module Mutations
 
       description 'Atualize uma pesquisa específica'
 
-      argument :id, ID, required: true
-      argument :title, String, required: false
-      argument :closed, Boolean, required: false
-      argument :deadline, GraphQL::Types::ISO8601DateTime, required: false
+      input_object_class Types::Inputs::Surveys::UpdateInputType
 
       field :survey, Types::SurveyType, null: false
 
-      def resolve(id:, title: nil, closed: nil, deadline: nil)
+      def resolve(**arguments)
         authenticate_user(role: 'adm')
-        survey = Survey.find(id)
-
-        #Tentar melhorar
-        survey.title = title if title.present?
-        survey.closed = closed if closed != nil
-        survey.deadline = deadline if deadline.present?
-
-        if survey.save
-          {survey: survey}
-        else
-          raise GraphQL::ExecutionError.new(survey.errors.full_messages.join(', '))
-        end
+        SurveyUpdater.new(arguments, context[:current_user].id).call
       end
     end
   end

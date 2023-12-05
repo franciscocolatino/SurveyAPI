@@ -4,20 +4,13 @@ module Mutations
 
       description 'Criando uma pesquisa'
 
-      argument :title, String, required: true
-      argument :closed, Boolean, required: true
-      argument :deadline, GraphQL::Types::ISO8601DateTime, required: true
+      input_object_class Types::Inputs::Surveys::CreateInputType
 
       field :survey, Types::SurveyType, null: false
 
-      def resolve(title:, closed:, deadline:)
+      def resolve(**arguments)
         authenticate_user(role: 'adm')
-        survey = Survey.new(title: title, closed: closed, deadline: deadline, user_id: context[:current_user].id)
-        if survey.save
-          {survey: survey}
-        else
-          raise GraphQL::ExecutionError.new(survey.errors.full_messages.join(', '))
-        end
+        SurveyUpdater.new(arguments, context[:current_user].id).call
       end
     end
   end
