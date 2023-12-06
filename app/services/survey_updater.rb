@@ -1,8 +1,7 @@
 class SurveyUpdater < ApplicationService
   def initialize(arguments, user_id)
     @data = arguments.to_hash
-    @id = @data[:id]
-    @data.except!(:id)
+    @data = @data.except(:id)
     @user_id = user_id
   end
 
@@ -15,7 +14,7 @@ class SurveyUpdater < ApplicationService
 
 
   def set_survey
-    @survey = Survey.find(@id)
+    @survey = Survey.find(@data[:id])
   end
 
   def update_survey

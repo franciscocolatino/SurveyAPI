@@ -7,12 +7,10 @@ module Queries
       type Types::SurveyType, null: false
 
       def resolve(id:)
+        authenticate_user(role: 'adm')
         begin
-          authenticate_user(role: 'adm')
-          survey = Survey.find_by(id: id)
+          Survey.find_by(id: id)
         rescue ActiveRecord::RecordNotFound => e
-          raise GraphQL::ExecutionError.new(e.message)
-        rescue StandardError => e
           raise GraphQL::ExecutionError.new(e.message)
         end
       end

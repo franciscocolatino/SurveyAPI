@@ -8,7 +8,7 @@ module Queries
 
       def resolve(survey_id:)
         authenticate_user(role: 'adm')
-        AnswerQuantifier.new(survey_id).call
+        AnswersQuantifier.new(survey_id).call
       end
     end
   end

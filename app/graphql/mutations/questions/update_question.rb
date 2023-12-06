@@ -10,12 +10,7 @@ module Mutations
 
       def resolve(**arguments)
         authenticate_user(role: 'adm')
-        question = Question.find(arguments[:id])
-
-        question.update!(arguments.to_hash)
-        { question: question}
-      rescue ActiveRecord::RecordInvalid => e
-        GraphQL::ExecutionError.new(e.record.errors.full_messages.join(', '))
+        QuestionUpdater.new(arguments).call
       end
     end
   end

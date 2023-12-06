@@ -3,8 +3,6 @@ module Mutations
     class LoginUser < BaseMutation
 
       description "Logando usuário para obter o token de acesso"
-
-
       input_object_class Types::Inputs::Users::InputType
 
       field :token, String, null: false

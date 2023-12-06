@@ -1,4 +1,4 @@
-class AnswersCreator
+class AnswersCreator < ApplicationService
   def initialize(answers, user_id)
     @data = []
     answers.each do |answer|

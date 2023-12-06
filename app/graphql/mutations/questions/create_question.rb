@@ -10,12 +10,7 @@ module Mutations
 
       def resolve(**arguments)
         authenticate_user(role: 'adm')
-        question = Question.new(arguments.to_hash)
-        if question.save
-          {question: question}
-        else
-          raise GraphQL::ExecutionError.new(question.errors.full_messages.join(', '))
-        end
+        QuestionCreator.new(arguments).call
       end
     end
   end

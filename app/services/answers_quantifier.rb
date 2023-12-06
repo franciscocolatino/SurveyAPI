@@ -1,4 +1,4 @@
-class AnswerQuantifier < ApplicationService
+class AnswersQuantifier < ApplicationService
   def initialize(survey_id)
     @survey_id = survey_id
   end

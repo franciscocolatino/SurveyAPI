@@ -6,7 +6,7 @@ module Queries
 
       def resolve()
         authenticate_user(role: 'adm')
-        AnswerQuantifier.new(nil).call
+        AnswersQuantifier.new(nil).call
       end
     end
   end
