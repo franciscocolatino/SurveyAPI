@@ -1,0 +1,4 @@
+one:
+  username: testing
+  password_digest: <%= BCrypt::Password.create('1234') %>
+  role: adm
