@@ -8,7 +8,7 @@ RSpec.describe "mutation register" do
       role: "adm"
     })
     expect(result.dig("data", "createUser", "token")).not_to be_blank
-    expect(result.dig("data", "createUser", "user")).not_to be_blank
+    expect(result.dig("data", "createUser", "user", "username")).to eq("testingNewUser")
   end
 
 
