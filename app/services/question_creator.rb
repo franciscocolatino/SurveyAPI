@@ -12,7 +12,7 @@ class QuestionCreator < ApplicationService
   def create_question
     question = Question.new(@data)
     if question.save
-      {survey: question}
+      {question: question}
     else
       raise GraphQL::ExecutionError.new(question.errors.full_messages.join(', '))
     end
