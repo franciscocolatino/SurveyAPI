@@ -5,7 +5,7 @@ module Types::Inputs
       argument :name, String, required: true
       argument :options_answer, [String], required: true
       argument :survey_id, Integer, required: true
-      argument :type_question, String, required: true
+      argument :type_question, Types::Enums::QuestionEnumType, required: true
 
     end
   end
