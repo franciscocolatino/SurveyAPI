@@ -10,7 +10,7 @@ module Mutations
 
       def resolve(**arguments)
         authenticate_user(role: 'adm')
-        SurveyUpdater.new(arguments, context[:current_user].id).call
+        SurveyCreator.new(arguments, context[:current_user].id).call
       end
     end
   end
